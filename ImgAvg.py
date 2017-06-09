@@ -6,38 +6,41 @@ import re  # For regular expression matching the tweet text
 import botconfig
 import math
 
+# Finds the average color tuple of a bounded partition of the image
 def partitionAvg(colors):
-    pixelCount = 0
-    avgColor = list()
+    pixel_count = 0
+    avg_color = list()
     for i in range(len(colors[0][1])):
-        avgColor.append(0)
+        avg_color.append(0)
 
     for entry in colors:
         count = entry[0]
         color = entry[1]
 
-        pixelCount += count
+        pixel_count += count
         for i in range(len(color)):
-            avgColor[i] += (count * color[i])
+            avg_color[i] += (count * color[i])
 
-    for i in range(len(avgColor)):
-        avgColor[i] = int(avgColor[i] / pixelCount)
+    for i in range(len(avg_color)):
+        avg_color[i] = int(avg_color[i] / pixel_count)
 
-    return tuple(avgColor)
+    return tuple(avg_color)
 
 def main(argv):
+    # Tweet object is passed into this module
     tweet = argv
-    # tweet = {}
+
     # Open the image from the URL
     response = requests.get(tweet['entities']['media'][0]['media_url'])
-
     img = Image.open(BytesIO(response.content))
 
+    # Strip out the bot mention in the tweet text, and strip the extra whitespace
     tweet_text = str(tweet['text']).replace(botconfig.botMention, "").strip()
 
     pattern = re.compile("[0-9]+[x][0-9]+")
 
     if pattern.match(tweet_text):
+        # Parse out the rows/columns from the tweet text if the pattern matches
         size_string = tweet_text.split()[0]
         rows = int(size_string.split("x")[0])
         columns = int(size_string.split("x")[1])
@@ -60,13 +63,11 @@ def main(argv):
 
             colors = partition.getcolors(pow(2, 24))
 
-            avgColor = partitionAvg(colors)
+            avg_color = partitionAvg(colors)
 
-            partition = Image.new(partition.mode, partition.size, avgColor)
+            partition = Image.new(partition.mode, partition.size, avg_color)
 
             img.paste(partition, (left, upper, right, lower))
-    #img.show()
-
     return img
 
 if __name__ == "__main__":
