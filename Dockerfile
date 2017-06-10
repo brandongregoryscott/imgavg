@@ -8,3 +8,6 @@ RUN pip3 install twython
 RUN pip3 install pillow
 
 CMD ["python3", "/bot/PollingService.py"]
+
+# docker build -t imgavg ~/ImgAvg/
+# docker run --name imgavg --restart=always --log-opt max-size=100k -v /home/brandon/ImgAvg/:/bot/ -d imgavg
