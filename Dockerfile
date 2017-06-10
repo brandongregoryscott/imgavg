@@ -11,3 +11,4 @@ CMD ["python3", "/bot/PollingService.py"]
 
 # docker build -t ImgAvg ~/ImgAvg/
 # docker run --name ImgAvg --restart=always --log-opt max-size=100k -v /home/brandon/ImgAvg/:/bot/ -d ImgAvg
+
