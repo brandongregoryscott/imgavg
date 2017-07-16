@@ -1,5 +1,7 @@
 import random
-from PIL import Image
+
+import sys
+from PIL import Image, ImageDraw
 import requests  # For opening the image from a URL
 from io import BytesIO  # For opening the image from a URL
 import re  # For regular expression matching the tweet text
@@ -26,6 +28,28 @@ def partitionAvg(colors):
 
     return tuple(avg_color)
 
+def img_to_avg(img, rows, columns):
+    row_step = float(img.height / rows)
+    column_step = float(img.width / columns)
+
+    for r in range(rows):
+        for c in range(columns):
+            left = math.ceil(c * column_step)
+            upper = math.ceil(r * row_step)
+            right = math.ceil((c + 1) * column_step)
+            lower = math.ceil((r + 1) * row_step)
+
+            partition = img.crop((left, upper, right, lower))
+
+            colors = partition.getcolors(pow(2, 24))
+
+            avg_color = partitionAvg(colors)
+
+            partition = Image.new(partition.mode, partition.size, avg_color)
+
+            img.paste(partition, (left, upper, right, lower))
+    return img
+
 def main(argv):
     # Tweet object is passed into this module
     tweet = argv
@@ -49,26 +73,34 @@ def main(argv):
         rows = random.randint(3, 12)
         columns = random.randint(3, 12)
 
-    row_step = float(img.height / rows)
-    column_step = float(img.width / columns)
 
-    for r in range(rows):
-        for c in range(columns):
-            left = math.ceil(c * column_step)
-            upper = math.ceil(r * row_step)
-            right = math.ceil((c + 1) * column_step)
-            lower = math.ceil((r + 1) * row_step)
 
-            partition = img.crop((left, upper, right, lower))
+def original():
+    img_size = random.choice([(1920, 1080), (1080, 1920), (2000, 2000), (2560, 2048), (2048, 2560)])
+    palette = list()
+    for z in range(random.randint(500, 1000)):
+        palette.append((random.randint(0, 256), random.randint(0, 256), random.randint(0, 256), random.randint(0, 100)))
 
-            colors = partition.getcolors(pow(2, 24))
+    img = Image.new('RGB', img_size, 0)
+    draw = ImageDraw.Draw(img)
 
-            avg_color = partitionAvg(colors)
+    points = list()
+    for x in range(-int(img.width / 2), int(img.width * 2), random.randint(20, 50)):
+        for y in range(-int(img.height / 2), int(img.height * 2), random.randint(20, 50)):
+            points.append((x, y))
+    for i in range(random.randint(50, 100)):
+        start_degrees = random.randint(0, 180)
+        end_degrees = random.randint(start_degrees, 360)
+        point_sample = random.sample(points, 2)
+        draw.pieslice(xy=point_sample, start=start_degrees, end=end_degrees, fill=random.choice(palette))
 
-            partition = Image.new(partition.mode, partition.size, avg_color)
+    rows = random.randint(3, 15)
+    columns = random.randint(3, 15)
 
-            img.paste(partition, (left, upper, right, lower))
+    img = img_to_avg(img, rows, columns)
+    img.save("/out/" + str(random.randint(int(sys.maxsize / 4), sys.maxsize)) + ".png")
     return img
+
 
 if __name__ == "__main__":
     main()
