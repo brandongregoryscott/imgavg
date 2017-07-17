@@ -8,6 +8,14 @@ import re  # For regular expression matching the tweet text
 import botconfig
 import math
 
+def factorize(num):
+    factors = list()
+    for i in range(1, int(num / 3)):
+        if num % i == 0 and i != 1 and i != num:
+            factors.append(i)
+    return factors
+
+
 # Finds the average color tuple of a bounded partition of the image
 def partitionAvg(colors):
     pixel_count = 0
@@ -68,11 +76,19 @@ def main(argv):
         size_string = tweet_text.split()[0]
         rows = int(size_string.split("x")[0])
         columns = int(size_string.split("x")[1])
-
     else:
-        rows = random.randint(3, 12)
-        columns = random.randint(3, 12)
-
+        row_factors = factorize(img.height)
+        column_factors = factorize(img.width)
+        if len(row_factors) > 0:
+            rows = random.choice(row_factors)
+        else:
+            rows = random.randint(3, 15)
+        if len(column_factors) > 0:
+            columns = random.choice(column_factors)
+        else:
+            columns = random.randint(3, 15)
+    img = img_to_avg(img, rows, columns)
+    return img
 
 
 def original():
@@ -94,8 +110,16 @@ def original():
         point_sample = random.sample(points, 2)
         draw.pieslice(xy=point_sample, start=start_degrees, end=end_degrees, fill=random.choice(palette))
 
-    rows = random.randint(3, 15)
-    columns = random.randint(3, 15)
+    row_factors = factorize(img.height)
+    column_factors = factorize(img.width)
+    if len(row_factors) > 0:
+        rows = random.choice(row_factors)
+    else:
+        rows = random.randint(3, 15)
+    if len(column_factors) > 0:
+        columns = random.choice(column_factors)
+    else:
+        columns = random.randint(3, 15)
 
     img = img_to_avg(img, rows, columns)
     img.save("/out/" + str(random.randint(int(sys.maxsize / 4), sys.maxsize)) + ".png")
