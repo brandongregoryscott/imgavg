@@ -1,11 +1,8 @@
 import random
-
-import sys
 from PIL import Image, ImageDraw
 import requests  # For opening the image from a URL
 from io import BytesIO  # For opening the image from a URL
 import re  # For regular expression matching the tweet text
-import botconfig
 import math
 
 def factorize(num):
@@ -67,7 +64,7 @@ def main(argv):
     img = Image.open(BytesIO(response.content))
 
     # Strip out the bot mention in the tweet text, and strip the extra whitespace
-    tweet_text = str(tweet['text']).replace(botconfig.botMention, "").strip()
+    tweet_text = str(tweet['text']).replace("@imgavgbot", "").strip()
 
     pattern = re.compile("[0-9]+[x][0-9]+")
 
