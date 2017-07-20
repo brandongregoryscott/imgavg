@@ -1,5 +1,6 @@
 import io
 import random
+import logging
 
 from twitterbot import TwitterBot, ignore
 
@@ -63,6 +64,10 @@ class Bot(TwitterBot):
                                     'Average, at best.',
                                     'On average, this is what your image looks like.',
                                     'Everything feels a little blurry now.']
+        stdout_handler = logging.StreamHandler(sys.stdout)
+        stdout_handler.setFormatter(self.config['logging_formatter'])
+        stdout_handler.setLevel(logging.INFO)
+        self.config['logging_handlers'].append(stdout_handler)
 
     def on_scheduled_tweet(self):
         mention_user = random.choice(self.config['bots'])
