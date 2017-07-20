@@ -66,7 +66,8 @@ class Bot(TwitterBot):
                                     'On average, this is what your image looks like.',
                                     'Everything feels a little blurry now.']
         stdout_handler = logging.StreamHandler(sys.stdout)
-        stdout_handler.setFormatter(self.config['logging_formatter'])
+        stdout_handler.setFormatter(logging.Formatter(fmt='%(asctime)s | %(levelname)s: %(message)s',
+                                                             datefmt='%m/%d/%Y %I:%M:%S %p'))
         stdout_handler.setLevel(logging.INFO)
         self.config['logging_handlers'].append(stdout_handler)
 
