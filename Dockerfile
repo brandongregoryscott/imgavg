@@ -1,10 +1,9 @@
 FROM ubuntu
 MAINTAINER Brandon Scott
 
-RUN apt-get update -y -q && apt-get install -y -q git python3 python3-pip
+RUN apt-get update -y -q && apt-get install -y -q git python3 python3-pip && git clone https://github.com/brandongregoryscott/twitterbot
 RUN pip3 install --upgrade pip setuptools
 RUN pip3 install twython pillow
-RUN git clone https://github.com/brandongregoryscott/twitterbot
 RUN cd twitterbot && python3 setup.py install && cd ..
 WORKDIR /imgavg/
 CMD ["python3", "bot.py"]
