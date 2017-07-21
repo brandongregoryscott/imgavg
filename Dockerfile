@@ -10,10 +10,5 @@ WORKDIR /imgavg/
 CMD ["python3", "bot.py"]
 
 # docker build -t imgavg ~/imgavg/
-# docker run --name imgavg      \
-# --restart=always              \
-# --log-opt max-size=1024kb     \
-# --volume ~/output/imgavg/:/out/     \
-# --volume ~/imgavg/:/imgavg/         \
-# -d imgavg
+# docker run --name imgavg  --restart=always --log-opt max-size=1024kb --volume ~/output/imgavg/:/out/ --volume ~/imgavg/:/imgavg/ -d imgavg
 
