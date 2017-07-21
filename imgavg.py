@@ -4,6 +4,7 @@ import requests  # For opening the image from a URL
 from io import BytesIO  # For opening the image from a URL
 import re  # For regular expression matching the tweet text
 import math
+import sys
 
 def factorize(num):
     factors = list()
