@@ -50,10 +50,6 @@ class Bot(TwitterBot):
         # follow back all followers?
         self.config['autofollow'] = False
 
-        # log to stdout & file
-        self.config['logging']['stdout'] = True
-        self.config['logging']['file'] = True
-
         ###########################################
         # CUSTOM: your bot's own config variables! #
         ###########################################
