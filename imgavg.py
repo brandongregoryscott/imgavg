@@ -7,7 +7,7 @@ import math
 
 def factorize(num):
     factors = list()
-    for i in range(1, int(num / 3)):
+    for i in range(1, int(num / 6)):
         if num % i == 0 and i != 1 and i != num:
             factors.append(i)
     return factors
