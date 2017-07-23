@@ -65,7 +65,7 @@ class Bot(TwitterBot):
                                     'Average, at best.',
                                     'On average, this is what your image looks like.',
                                     'Everything feels a little blurry now.']
-
+    @ignore
     def on_scheduled_tweet(self):
         mention_user = random.choice(self.config['bots'])
         text = random.choice(self.config['tags'])
