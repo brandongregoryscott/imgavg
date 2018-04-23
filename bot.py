@@ -61,6 +61,8 @@ class Bot(TwitterBot):
         self.config['tags'] = ast.literal_eval(os.environ['TAGS'])
         self.config['responses'] = ast.literal_eval(os.environ['RESPONSES'])
 
+        self.state['last_mention_id'] = os.getenv('LAST_MENTION_ID', 1)
+         
     def on_scheduled_tweet(self):
         return
         mention_user = random.choice(self.config['bots'])
