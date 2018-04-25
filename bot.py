@@ -48,6 +48,8 @@ class Bot(TwitterBot):
         # follow back all followers?
         self.config['autofollow'] = ast.literal_eval(os.getenv('AUTOFOLLOW', 'False'))
 
+        # number of seconds to sleep between each run() loop
+        self.config['sleep_time'] = ast.literal_eval(os.getenv('SLEEP_TIME', '30'))
 
         ###########################################
         # CUSTOM: your bot's own config variables! #
