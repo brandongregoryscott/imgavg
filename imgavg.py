@@ -5,6 +5,7 @@ from io import BytesIO  # For opening the image from a URL
 import re  # For regular expression matching the tweet text
 import math
 import sys
+import os
 
 def factorize(num):
     factors = list()
@@ -88,6 +89,21 @@ def main(argv):
     img = img_to_avg(img, rows, columns)
     return img
 
+def cmdline(argv):
+    input_filename = argv[1]
+    rows = int(argv[2])
+    columns = int(argv[3])
+    print("Opening " + input_filename)
+    img = Image.open(input_filename)
+    base_filename = str(input_filename.split('/').pop())
+    extension = str(base_filename.split('.')[1])
+    base_filename = base_filename.strip(".{0}".format(extension))
+    output_filename = '{0}_imgavg{1}x{2}.{3}'.format(base_filename, rows, columns, extension)
+    print('Converting image to {0} rows and {1} columns')
+    img = img_to_avg(img, rows, columns)
+    img.save(output_filename)
+    print('Saved file to {0}/{1}'.format(os.getcwd(), output_filename))
+    exit
 
 def original():
     img_size = random.choice([(1920, 1080), (1080, 1920), (2000, 2000), (2560, 2048), (2048, 2560)])
@@ -125,4 +141,4 @@ def original():
 
 
 if __name__ == "__main__":
-    main()
+    cmdline(sys.argv)
