@@ -98,7 +98,7 @@ def cmdline(argv):
     base_filename = str(input_filename.split('/').pop())
     extension = str(base_filename.split('.')[1])
     base_filename = base_filename.strip(".{0}".format(extension))
-    output_filename = '{0}_imgavg{1}x{2}.{3}'.format(base_filename, rows, columns, extension)
+    output_filename = '{0}_imgavg{1}x{2}.{3}'.format(base_filename, rows, columns, 'png')
     print('Converting image to {0} rows and {1} columns'.format(rows, columns))
     img = img_to_avg(img, rows, columns)
     img.save(output_filename)
